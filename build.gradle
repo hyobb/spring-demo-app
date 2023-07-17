@@ -1,0 +1,58 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.23' // 추가
+	runtimeOnly 'org.postgresql:postgresql' // 추가
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+task buildAndReload {
+	dependsOn build
+	mustRunAfter build
+	doLast {
+		new File(".", "reload.txt").text = "${System.currentTimeMillis()}"
+	}
+}
+
+task updateLib(type: Copy) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from configurations.compileClasspath into "libs/"
+	from configurations.runtimeClasspath into "libs/"
+}
+
+bootRun {
+	String activeProfile = System.properties['spring.profiles.active']
+	systemProperty "spring.profiles.active", activeProfile
+}
