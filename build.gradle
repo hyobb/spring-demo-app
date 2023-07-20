@@ -25,13 +25,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.web3j:core:4.8.7'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.23'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.23' // 추가
-	runtimeOnly 'org.postgresql:postgresql' // 추가
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.postgresql:postgresql'
 }
 
 tasks.named('test') {

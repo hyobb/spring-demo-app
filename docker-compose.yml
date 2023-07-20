@@ -24,8 +24,25 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: root
+      SPRING_RABBITMQ_PASSWORD: root
+      SPRING_RABBITMQ_LISTENER_PENDING_BLOCK_QUEUE: pending-block-queue
+      SPRING_RABBITMQ_LISTENER_MINED_BLOCK_QUEUE: mined-block-queue
     depends_on:
       - db
-
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/data
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=root
 volumes:
   db-data:
+  rabbitmq_data:
